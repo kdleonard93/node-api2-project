@@ -14,8 +14,7 @@ router.get("/", (res, req) => {
 });
 
 router.get("/:id", (req, res) => {
-  posts
-    .findByID(req.params.id)
+  db.findByID(req.params.id)
     .then(post => {
       if (post) {
         res.status(200).json(post);
@@ -34,8 +33,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.get("/:id/comments", (req, res) => {
-  posts
-    .findCommentByID(req.params.id)
+  db.findCommentByID(req.params.id)
     .then(comments => {
       if (comments) {
         res.status(200).json(comments);
@@ -59,8 +57,7 @@ router.post("/", (req, res) => {
       errorMessage: "Please provide title and contents for the post."
     });
   }
-  posts
-    .insert(req.body)
+  db.insert(req.body)
     .then(post => {
       res.status(201).json(post);
     })
@@ -74,11 +71,17 @@ router.post("/", (req, res) => {
   router.post("/:id/comments", (req, res) => {
     const userComment = req.body;
     const id = req.params.id;
-    if (!userComment(id)) {
+    if (!userComment[id]) {
       res.status(404).json({
         message: "The post with the specified ID does not exist."
       });
     }
+    db.findByID(id).then(() => {
+      insertComment({
+        ...userComment,
+        post_id: id
+      });
+    });
   });
 });
 
