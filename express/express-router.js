@@ -53,4 +53,12 @@ router.get("/:id/comments", (req, res) => {
     });
 });
 
+router.post("/", (req, res) => {
+  if (!req.body.title || !req.body.contents) {
+    return res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  }
+});
+
 module.exports = router;
