@@ -70,6 +70,16 @@ router.post("/", (req, res) => {
         error: "There was an error while saving the post to the database"
       });
     });
+
+  router.post("/:id/comments", (req, res) => {
+    const userComment = req.body;
+    const id = req.params.id;
+    if (!userComment(id)) {
+      res.status(404).json({
+        message: "The post with the specified ID does not exist."
+      });
+    }
+  });
 });
 
 module.exports = router;
