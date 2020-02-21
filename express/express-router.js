@@ -76,12 +76,24 @@ router.post("/", (req, res) => {
         message: "The post with the specified ID does not exist."
       });
     }
-    db.findByID(id).then(() => {
-      insertComment({
-        ...userComment,
-        post_id: id
+    db.findByID(id)
+      .then(() => {
+        insertComment({
+          ...userComment,
+          post_id: id
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(500).json({
+          message: "There was an error while saving the content to the database"
+        });
       });
-    });
+  });
+
+  router.delete("/:id", (req, res) => {
+    const deleteComment = req.body;
+    const id = req.params.id;
   });
 });
 
