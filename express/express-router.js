@@ -92,8 +92,18 @@ router.post("/", (req, res) => {
   });
 
   router.delete("/:id", (req, res) => {
-    const deleteComment = req.body;
     const id = req.params.id;
+    const comment = req.body;
+
+    db.remove(id).then(comment => {
+      if (!comment[id]) {
+        res.status(404).json({
+          message: "The post with the specified ID does not exist."
+        });
+      } else {
+        res.status(200).json(comment);
+      }
+    });
   });
 });
 
