@@ -5,17 +5,17 @@ const router = express.Router();
 
 router.get("/", (res, req) => {
   db.find()
-    .then(posts => res.json(posts))
-    .catch(error =>
+    .then((posts) => res.json(posts))
+    .catch((error) =>
       res.status(500).json({
-        message: "Posts can't be found"
+        message: "Posts can't be found",
       })
     );
 });
 
 router.get("/:id", (req, res) => {
   db.findByID(req.params.id)
-    .then(post => {
+    .then((post) => {
       if (post) {
         res.status(200).json(post);
       } else {
@@ -24,17 +24,17 @@ router.get("/:id", (req, res) => {
           .json({ message: "The post with the specified ID does not exist." });
       }
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       res.status(500).json({
-        error: "The post information could not be retrieved."
+        error: "The post information could not be retrieved.",
       });
     });
 });
 
 router.get("/:id/comments", (req, res) => {
   db.findCommentByID(req.params.id)
-    .then(comments => {
+    .then((comments) => {
       if (comments) {
         res.status(200).json(comments);
       } else {
@@ -43,7 +43,7 @@ router.get("/:id/comments", (req, res) => {
           .json({ message: "The post with the specified ID does not exist." });
       }
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       res
         .status(500)
@@ -54,17 +54,17 @@ router.get("/:id/comments", (req, res) => {
 router.post("/", (req, res) => {
   if (!req.body.title || !req.body.contents) {
     return res.status(400).json({
-      errorMessage: "Please provide title and contents for the post."
+      errorMessage: "Please provide title and contents for the post.",
     });
   }
   db.insert(req.body)
-    .then(post => {
+    .then((post) => {
       res.status(201).json(post);
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       res.status(500).json({
-        error: "There was an error while saving the post to the database"
+        error: "There was an error while saving the post to the database",
       });
     });
 
@@ -73,20 +73,21 @@ router.post("/", (req, res) => {
     const id = req.params.id;
     if (!userComment[id]) {
       res.status(404).json({
-        message: "The post with the specified ID does not exist."
+        message: "The post with the specified ID does not exist.",
       });
     }
     db.findByID(id)
       .then(() => {
         insertComment({
           ...userComment,
-          post_id: id
+          post_id: id,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         res.status(500).json({
-          message: "There was an error while saving the content to the database"
+          message:
+            "There was an error while saving the content to the database",
         });
       });
   });
@@ -96,19 +97,19 @@ router.post("/", (req, res) => {
     const comment = req.body;
 
     db.remove(id)
-      .then(comment => {
+      .then((comment) => {
         if (!comment[id]) {
           res.status(404).json({
-            message: "The post with the specified ID does not exist."
+            message: "The post with the specified ID does not exist.",
           });
         } else {
           res.status(200).json(comment);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         res.status(500).json({
-          error: "The post information could not be modified."
+          error: "The post information could not be modified.",
         });
       });
   });
@@ -116,23 +117,23 @@ router.post("/", (req, res) => {
     const id = req.params.id;
     const changes = req.body;
     db.update(id, changes)
-      .then(post => {
+      .then((post) => {
         if (!post) {
           status(404).json({
-            message: "The post with the specified ID does not exist."
+            message: "The post with the specified ID does not exist.",
           });
         } else if (!changes.title || !changes.contents) {
           res.status(400).json({
-            errorMessage: "Please provide title and contents for the post."
+            errorMessage: "Please provide title and contents for the post.",
           });
         } else {
           res.status(200).json(post);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         res.status(500).json({
-          error: "The post information could not be modified."
+          error: "The post information could not be modified.",
         });
       });
   });
