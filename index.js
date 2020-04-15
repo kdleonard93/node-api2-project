@@ -1,17 +1,13 @@
 const express = require("express");
-
-const postsRouter = require("./router.js");
+const db = require("./data/db");
+const expressRouter = require("./express/express-router");
 
 const server = express();
+const port = 4000;
 
 server.use(express.json());
+server.use("/", expressRouter);
 
-server.use("/api/posts", postsRouter);
-
-server.get("/", (req, res) => {
-  res.send(`BLOG`);
-});
-
-server.listen(4000, () => {
-  console.log("Server Running on http://localhost:4000");
+server.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });
