@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/api/posts", (req, res) => {
     posts.find(posts)
     .then((posts) => {
-        res.status(200).json({message: "Posts found"})
+        res.status(200).json(posts)
     })
     .catch((error) =>{
         console.log(error);
