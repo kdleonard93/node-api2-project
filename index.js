@@ -1,1 +1,2 @@
-const router = require("./posts/posts-router")
+const express = require("express")
+const postsRouter = require("./posts/posts-router")
