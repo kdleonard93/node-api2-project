@@ -1,0 +1,1 @@
+const router = require("./posts/posts-router")
