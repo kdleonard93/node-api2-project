@@ -18,7 +18,7 @@ router.get("/api/posts/:id", (req, res) => {
   posts
     .findById(req.params.id)
     .then((posts) => {
-      if (post) {
+      if (posts) {
         res.status(200).json(posts[0]);
       } else {
         res.status(404).json({
@@ -32,6 +32,7 @@ router.get("/api/posts/:id", (req, res) => {
         .json({ message: "The post information could not be retrieved." });
     });
 });
+
 
 // router.post("/api/posts", (req, res) => {
 //   posts;
